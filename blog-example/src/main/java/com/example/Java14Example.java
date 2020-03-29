@@ -14,13 +14,13 @@ public class Java14Example {
      * Records 特性演示
      */
     private static void recordTest() {
-        // 记录类型
-        record People(Integer id, String name, Integer age) {
-        }
-        // 实例化
-        People people = new People(1, "老王", 18);
-        // 输出属性 name
-        System.out.println(people.name);
+//        // 记录类型
+//        record People(Integer id, String name, Integer age) {
+//        }
+//        // 实例化
+//        People people = new People(1, "老王", 18);
+//        // 输出属性 name
+//        System.out.println(people.name);
     }
 
     /**
@@ -37,11 +37,11 @@ public class Java14Example {
                 System.out.println("default");
                 break;
         }
-        // 新写法
-        switch ("java") {
-            case "java", "jdk" -> System.out.println("This is Java.");
-            default -> System.out.println("default");
-        }
+//        // 新写法
+//        switch ("java") {
+//            case "java", "jdk" -> System.out.println("This is Java.");
+//            default -> System.out.println("default");
+//        }
     }
 
     /**
@@ -54,9 +54,9 @@ public class Java14Example {
             String s = (String) obj;
             System.out.println(s);
         }
-        // 新写法
-        if (obj instanceof String s) {
-            System.out.println(s);
-        }
+//        // 新写法
+//        if (obj instanceof String s) {
+//            System.out.println(s);
+//        }
     }
 }
