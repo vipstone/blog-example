@@ -19,6 +19,15 @@
     </properties>
 
     <dependencies>
+
+        <!-- netty 基于 NIO 的高性能网络工具库 -->
+        <!-- https://mvnrepository.com/artifact/io.netty/netty-common -->
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-common</artifactId>
+            <version>4.1.48.Final</version>
+        </dependency>
+
         <!-- lombok 工具 -->
         <!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
         <dependency>
