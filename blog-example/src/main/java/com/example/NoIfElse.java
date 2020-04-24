@@ -204,6 +204,10 @@ public class NoIfElse {
         tMap.put(1, "name");
         tMap.put(2, "id");
         tMap.put(3, "mobile");
+        // 先判空，不然可能会有问题
+        if (!tMap.containsKey(type)) {
+            return;
+        }
         tName = tMap.get(type);
     }
 
