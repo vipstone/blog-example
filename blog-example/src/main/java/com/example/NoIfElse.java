@@ -161,7 +161,8 @@ public class NoIfElse {
         }
         // 优化后
         Optional<String> opt = Optional.of("java");
-        opt.ifPresentOrElse(v -> System.out.println(v), () -> System.out.println("Null"));
+        // JDK 9+ 优化代码
+        // opt.ifPresentOrElse(v -> System.out.println(v), () -> System.out.println("Null"));
         // opt.ifPresentOrElse(System.out::println, () -> System.out.println("Null"));
     }
 
