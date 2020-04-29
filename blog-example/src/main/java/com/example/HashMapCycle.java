@@ -1,44 +1,94 @@
 package com.example;
 
-import org.openjdk.jmh.annotations.*;
-import org.openjdk.jmh.runner.Runner;
-import org.openjdk.jmh.runner.RunnerException;
-import org.openjdk.jmh.runner.options.Options;
-import org.openjdk.jmh.runner.options.OptionsBuilder;
-
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 /**
  * HashMap 循环方式性能对比
  */
-@BenchmarkMode(Mode.Throughput) // 测试类型：吞吐量
-@OutputTimeUnit(TimeUnit.MILLISECONDS)
-@Warmup(iterations = 2, time = 1, timeUnit = TimeUnit.SECONDS) // 预热 2 轮，每次 1s
-@Measurement(iterations = 1, time = 1, timeUnit = TimeUnit.SECONDS) // 测试 5 轮，每次 3s
-@Fork(1) // fork 1 个线程
-@State(Scope.Thread) // 每个测试线程一个实例
 public class HashMapCycle {
     static Map<Integer, String> map = new HashMap() {{
         // 添加数据
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 3; i++) {
             put(i, "val:" + i);
         }
     }};
 
-    public static void main(String[] args) throws RunnerException {
-        // 启动基准测试
-        Options opt = new OptionsBuilder()
-                .include(HashMapCycle.class.getSimpleName()) // 要导入的测试类
-                .output("/Users/admin/Desktop/jmh-map.log") // 输出测试结果的文件
-                .build();
-        new Runner(opt).run(); // 执行测试
+    public static void main(String[] args) {
+//        entrySet();
+//        keySet();
+//        forEachEntrySet();
+//        forEachKeySet();
+//        lambda();
+//        streamApi();
+//        parallelStreamApi();
+
+//        // 安全的删除
+//        Iterator<Map.Entry<Integer, String>> iterator = map.entrySet().iterator();
+//        while (iterator.hasNext()) {
+//            Map.Entry<Integer, String> entry = iterator.next();
+//            if (entry.getKey() == 1) {
+//                // 删除
+//                System.out.println("del:" + entry.getKey());
+//                iterator.remove();
+//            } else {
+//                System.out.println("show:" + entry.getKey());
+//            }
+//        }
+
+
+        for (Map.Entry<Integer, String> entry : map.entrySet()) {
+            if (entry.getKey() == 1) {
+                // 删除
+                System.out.println("del:" + entry.getKey());
+                map.remove(entry.getKey());
+            } else {
+                System.out.println("show:" + entry.getKey());
+            }
+        }
+//        show:0
+//        del:1
+//        Exception in thread "main" java.util.ConcurrentModificationException
+//        at java.util.HashMap$HashIterator.nextNode(HashMap.java:1437)
+//        at java.util.HashMap$EntryIterator.next(HashMap.java:1471)
+//        at java.util.HashMap$EntryIterator.next(HashMap.java:1469)
+//        at com.example.HashMapTest.main(HashMapTest.java:40)
+
+
+//        // 根据 map 中的 key 去判断删除
+//        map.keySet().removeIf(key -> key == 1);
+//        map.forEach((key, value) -> {
+//            if (key == 1) {
+//                System.out.println("del:" + key);
+//                map.remove(key);
+//            } else {
+//                System.out.println("show:" + key);
+//            }
+//        });
+
+
+        map.entrySet().stream().filter(m -> 1 != m.getKey()).forEach((entry) -> {
+            if (entry.getKey() == 1) {
+                System.out.println("del:" + entry.getKey());
+            } else {
+                System.out.println("show:" + entry.getKey());
+            }
+        });
+
+//        map.entrySet().stream().forEach((entry) -> {
+//            if (entry.getKey() == 1) {
+//                System.out.println("del:" + entry.getKey());
+//                map.remove(entry.getKey());
+//            } else {
+//                System.out.println("show:" + entry.getKey());
+//            }
+//        });
+
     }
 
-    @Benchmark
-    public void entrySet() {
+
+    public static void entrySet() {
         // 遍历
         Iterator<Map.Entry<Integer, String>> iterator = map.entrySet().iterator();
         while (iterator.hasNext()) {
@@ -48,8 +98,7 @@ public class HashMapCycle {
         }
     }
 
-    @Benchmark
-    public void keySet() {
+    public static void keySet() {
         // 遍历
         Iterator<Integer> iterator = map.keySet().iterator();
         while (iterator.hasNext()) {
@@ -59,8 +108,8 @@ public class HashMapCycle {
         }
     }
 
-    @Benchmark
-    public void forEachEntrySet() {
+
+    public static void forEachEntrySet() {
         // 遍历
         for (Map.Entry<Integer, String> entry : map.entrySet()) {
             System.out.println(entry.getKey());
@@ -68,8 +117,8 @@ public class HashMapCycle {
         }
     }
 
-    @Benchmark
-    public void forEachKeySet() {
+
+    public static void forEachKeySet() {
         // 遍历
         for (Integer key : map.keySet()) {
             System.out.println(key);
@@ -77,8 +126,8 @@ public class HashMapCycle {
         }
     }
 
-    @Benchmark
-    public void lambda() {
+
+    public static void lambda() {
         // 遍历
         map.forEach((key, value) -> {
             System.out.println(key);
@@ -86,8 +135,8 @@ public class HashMapCycle {
         });
     }
 
-    @Benchmark
-    public void streamApi() {
+
+    public static void streamApi() {
         // 单线程遍历
         map.entrySet().stream().forEach((entry) -> {
             System.out.println(entry.getKey());
@@ -95,8 +144,8 @@ public class HashMapCycle {
         });
     }
 
-    @Benchmark
-    public void parallelStreamApi() {
+
+    public static void parallelStreamApi() {
         // 多线程遍历
         map.entrySet().parallelStream().forEach((entry) -> {
             System.out.println(entry.getKey());
