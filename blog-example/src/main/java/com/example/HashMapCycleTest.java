@@ -14,16 +14,16 @@ import java.util.concurrent.TimeUnit;
 /**
  * HashMap 循环方式性能对比测试
  */
-@BenchmarkMode(Mode.Throughput) // 测试类型：吞吐量
-@OutputTimeUnit(TimeUnit.MILLISECONDS)
+@BenchmarkMode(Mode.AverageTime) // 测试完成时间
+@OutputTimeUnit(TimeUnit.NANOSECONDS)
 @Warmup(iterations = 2, time = 1, timeUnit = TimeUnit.SECONDS) // 预热 2 轮，每次 1s
-@Measurement(iterations = 5, time = 3, timeUnit = TimeUnit.SECONDS) // 测试 5 轮，每次 3s
+@Measurement(iterations = 5, time = 1, timeUnit = TimeUnit.SECONDS) // 测试 5 轮，每次 3s
 @Fork(1) // fork 1 个线程
 @State(Scope.Thread) // 每个测试线程一个实例
 public class HashMapCycleTest {
     static Map<Integer, String> map = new HashMap() {{
         // 添加数据
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 100; i++) {
             put(i, "val:" + i);
         }
     }};
@@ -43,8 +43,8 @@ public class HashMapCycleTest {
         Iterator<Map.Entry<Integer, String>> iterator = map.entrySet().iterator();
         while (iterator.hasNext()) {
             Map.Entry<Integer, String> entry = iterator.next();
-            System.out.println(entry.getKey());
-            System.out.println(entry.getValue());
+            Integer k = entry.getKey();
+            String v = entry.getValue();
         }
     }
 
@@ -52,8 +52,8 @@ public class HashMapCycleTest {
     public void forEachEntrySet() {
         // 遍历
         for (Map.Entry<Integer, String> entry : map.entrySet()) {
-            System.out.println(entry.getKey());
-            System.out.println(entry.getValue());
+            Integer k = entry.getKey();
+            String v = entry.getValue();
         }
     }
 
@@ -62,9 +62,8 @@ public class HashMapCycleTest {
         // 遍历
         Iterator<Integer> iterator = map.keySet().iterator();
         while (iterator.hasNext()) {
-            Integer key = iterator.next();
-            System.out.println(key);
-            System.out.println(map.get(key));
+            Integer k = iterator.next();
+            String v = map.get(k);
         }
     }
 
@@ -72,8 +71,8 @@ public class HashMapCycleTest {
     public void forEachKeySet() {
         // 遍历
         for (Integer key : map.keySet()) {
-            System.out.println(key);
-            System.out.println(map.get(key));
+            Integer k = key;
+            String v = map.get(k);
         }
     }
 
@@ -81,8 +80,8 @@ public class HashMapCycleTest {
     public void lambda() {
         // 遍历
         map.forEach((key, value) -> {
-            System.out.println(key);
-            System.out.println(value);
+            Integer k = key;
+            String v = map.get(k);
         });
     }
 
@@ -90,8 +89,8 @@ public class HashMapCycleTest {
     public void streamApi() {
         // 单线程遍历
         map.entrySet().stream().forEach((entry) -> {
-            System.out.println(entry.getKey());
-            System.out.println(entry.getValue());
+            Integer k = entry.getKey();
+            String v = entry.getValue();
         });
     }
 
@@ -99,8 +98,8 @@ public class HashMapCycleTest {
     public void parallelStreamApi() {
         // 多线程遍历
         map.entrySet().parallelStream().forEach((entry) -> {
-            System.out.println(entry.getKey());
-            System.out.println(entry.getValue());
+            Integer k = entry.getKey();
+            String v = entry.getValue();
         });
     }
 }
