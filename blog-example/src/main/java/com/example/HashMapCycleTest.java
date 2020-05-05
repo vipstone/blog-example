@@ -31,7 +31,7 @@ public class HashMapCycleTest {
     public static void main(String[] args) throws RunnerException {
         // 启动基准测试
         Options opt = new OptionsBuilder()
-                .include(HashMapCycle.class.getSimpleName()) // 要导入的测试类
+                .include(HashMapCycleTest.class.getSimpleName()) // 要导入的测试类
                 .output("/Users/admin/Desktop/jmh-map.log") // 输出测试结果的文件
                 .build();
         new Runner(opt).run(); // 执行测试

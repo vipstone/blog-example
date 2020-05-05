@@ -1,4 +1,4 @@
-package com.example;
+package com.example.optimize;
 
 /**
  * String 优化
