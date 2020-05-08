@@ -32,7 +32,7 @@ public class HashMapCycleTest {
         // 启动基准测试
         Options opt = new OptionsBuilder()
                 .include(HashMapCycleTest.class.getSimpleName()) // 要导入的测试类
-                .output("/Users/admin/Desktop/jmh-map.log") // 输出测试结果的文件
+//                .output("/Users/admin/Desktop/jmh-map.log") // 输出测试结果的文件
                 .build();
         new Runner(opt).run(); // 执行测试
     }
@@ -81,7 +81,7 @@ public class HashMapCycleTest {
         // 遍历
         map.forEach((key, value) -> {
             Integer k = key;
-            String v = map.get(k);
+            String v = value;
         });
     }
 
@@ -94,7 +94,7 @@ public class HashMapCycleTest {
         });
     }
 
-    @Benchmark
+    //    @Benchmark
     public void parallelStreamApi() {
         // 多线程遍历
         map.entrySet().parallelStream().forEach((entry) -> {
