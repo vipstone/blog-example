@@ -20,6 +20,14 @@
 
     <dependencies>
 
+        <!-- 操作 redis 的客户端 -->
+        <!-- https://mvnrepository.com/artifact/redis.clients/jedis -->
+        <dependency>
+            <groupId>redis.clients</groupId>
+            <artifactId>jedis</artifactId>
+            <version>3.3.0</version>
+        </dependency>
+
         <!-- netty 基于 NIO 的高性能网络工具库 -->
         <!-- https://mvnrepository.com/artifact/io.netty/netty-common -->
         <dependency>
