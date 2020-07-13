@@ -9,5 +9,9 @@ public class IntegerTest {
         Integer i4 = 128;
         System.out.println(i3 == i4);
         System.out.println(i1 == i2);
+        Integer i5 = 558;
+        Integer i6 = 558;
+        System.out.println((i5 ^ i6) == 0); // 异或
+        System.out.println(i5.intValue() == i6.intValue()); // intValue
     }
 }
