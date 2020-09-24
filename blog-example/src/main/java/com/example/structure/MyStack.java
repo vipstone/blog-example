@@ -7,7 +7,8 @@ public class MyStack<E> {
 
     // 构造函数（初始化默认容量）
     MyStack() {
-        this.maxSize = 16;
+        maxSize = 16;
+        value = new Object[10];
     }
 
     // 有参构造函数
@@ -51,7 +52,7 @@ public class MyStack<E> {
 
     // 代码测试
     public static void main(String[] args) throws Exception {
-        MyStack stack = new MyStack(10);
+        MyStack stack = new MyStack();
         stack.push("Hello");
         stack.push("Java");
         System.out.println(stack.peep());
