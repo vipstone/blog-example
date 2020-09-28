@@ -1,15 +1,19 @@
 package com.example.structure;
 
+/**
+ * 自定义队列（数组实现）
+ * @param <E>
+ */
 public class MyQueue<E> {
 
     private Object[] queue; // 存储容器
     private int head; // 头部指针
     private int tail; // 尾部指正
-    private int size; // 队列长度
+    private int size; // 队列实际存储长度
     private int maxSize; // 最大容量
 
     public MyQueue() {
-        // 初始化容量
+        // 初始化
         this.maxSize = 10;
         this.head = 0;
         this.tail = -1;
@@ -18,6 +22,7 @@ public class MyQueue<E> {
     }
 
     public MyQueue(int initSize) {
+        // 初始化
         this.maxSize = initSize;
         this.head = 0;
         this.tail = -1;
@@ -63,7 +68,11 @@ public class MyQueue<E> {
         return (E) this.queue[head++];
     }
 
-    // 代码测试
+    /**
+     * 代码测试
+     * @param args
+     * @throws Exception
+     */
     public static void main(String[] args) throws Exception {
         MyQueue queue = new MyQueue();
         queue.offer("Hello");

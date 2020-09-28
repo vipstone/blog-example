@@ -5,6 +5,25 @@ package com.example.structure;
  */
 public class StackByLinked {
 
+    class Node {
+        Object value; // 每个节点的数据
+        Node next; // 下一个节点
+
+        public Node(Object value) {
+            this(value, null);
+        }
+
+        /**
+         * 创建新节点
+         * @param value 当前节点数据
+         * @param next  指向下一个节点（头插法）
+         */
+        public Node(Object value, Node next) {
+            this.value = value;
+            this.next = next;
+        }
+    }
+
     private Node top = null; // 栈顶数据
     private int maxSize = 0; // 栈最大容量
     private int leng = 0; // 栈实际容量
