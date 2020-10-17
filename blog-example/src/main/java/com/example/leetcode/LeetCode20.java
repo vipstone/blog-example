@@ -7,7 +7,7 @@ import java.util.Stack;
 /**
  * LeetCode 20 题
  */
-class LeetCode20 {
+public class LeetCode20 {
     public static void main(String[] args) {
         String s = "(([]))";
         System.out.println(s + " 验证结果：" + isValid(s));
