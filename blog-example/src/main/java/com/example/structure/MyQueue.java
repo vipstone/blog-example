@@ -2,13 +2,12 @@ package com.example.structure;
 
 /**
  * 自定义队列（数组实现）
- * @param <E>
  */
 public class MyQueue<E> {
 
     private Object[] queue; // 存储容器
     private int head; // 头部指针
-    private int tail; // 尾部指正
+    private int tail; // 尾部指针
     private int size; // 队列实际存储长度
     private int maxSize; // 最大容量
 
