@@ -13,8 +13,8 @@ public class Offer09 {
         Stack<Integer> outputStack; // 出栈和查询的栈容器
 
         public CQueue() {
-            inputStack = new Stack<>();
-            outputStack = new Stack<>();
+            inputStack = new Stack();
+            outputStack = new Stack();
         }
 
         // 添加操作
@@ -32,9 +32,8 @@ public class Offer09 {
                 while (!inputStack.isEmpty()) {
                     outputStack.push(inputStack.pop());
                 }
-                return outputStack.pop();
             }
-            return -1;
+            return outputStack.isEmpty() ? -1 : outputStack.pop();
         }
     }
 
