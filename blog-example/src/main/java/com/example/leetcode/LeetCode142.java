@@ -21,13 +21,9 @@ public class LeetCode142 {
             if (head == null) return null;
             ListNode fast = head; // 快指针（每次移动两步）
             ListNode slow = head; // 慢指针（每次移动一步）
-            while (fast != null) { // 快指针的下一个不为空
-                if (null != fast.next) {
-                    fast = fast.next.next; // 移动两步
-                } else {
-                    return null;
-                }
+            while (fast != null && fast.next != null) { // 快指针的下一个不为空
                 slow = slow.next;
+                fast = fast.next.next; // 移动两步
                 // 第一次相遇
                 if (fast == slow) {
                     ListNode newHead = head; // 从新开启一个指针，每次一步

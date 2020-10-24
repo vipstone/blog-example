@@ -23,11 +23,7 @@ public class LeetCode234 {
         public boolean isPalindrome(ListNode head) {
             // 创建快、慢指针
             ListNode fast = head, slow = head;
-            while (fast != null) {
-                // 快指针走到头了
-                if (fast.next == null) {
-                    break;
-                }
+            while (fast != null && fast.next != null) {
                 // 快指针走两步
                 fast = fast.next.next;
                 // 慢指针走一步
