@@ -20,6 +20,25 @@ public class Offer24 {
         }
     }
 
+    class Solution {
+        public ListNode reverseList(ListNode head) {
+            if (head == null) return null;
+            // 最终排序的倒序链表
+            ListNode prev = null;
+            while (head != null) {
+                // 存储下一个指针
+                ListNode next = head.next;
+                // 反转节点
+                head.next = prev;
+                // 存储反转的节点
+                prev = head;
+                // 移动到下一个指针
+                head = next;
+            }
+            return prev;
+        }
+    }
+
     /**
      * 反转链表（借助栈）
      * @param head
@@ -44,7 +63,7 @@ public class Offer24 {
         lastNode.next = null; // 最后一个节点赋为null（不然会造成死循环）
         return listNode;
     }
-    
+
 
     /**
      * 测试代码
