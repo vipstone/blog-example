@@ -1,13 +1,11 @@
 package com.example.leetcode;
 
 /**
- * 两数相加
+ * 两数相加/链表求和
  * https://leetcode-cn.com/problems/add-two-numbers/
+ * https://leetcode-cn.com/problems/sum-lists-lcci/
  */
 public class LeetCode2 {
-    public static void main(String[] args) {
-        System.out.println(23 % 10);
-    }
 
     class Solution {
         public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
