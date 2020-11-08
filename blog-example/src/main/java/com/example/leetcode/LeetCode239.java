@@ -61,17 +61,17 @@ public class LeetCode239 {
             ArrayDeque<Integer> deque = new ArrayDeque();
             for (int i = 0; i < nums.length; i++) {
 
-                // 移除左边超过滑动窗口的下标
-                if (i >= k && (i - k + 1) > deque.peek()) deque.removeFirst();
+                // 1.移除左边超过滑动窗口的下标
+                if (i >= k && (i - k) >= deque.peek()) deque.removeFirst();
 
-                // 从最后面开始移除小于 nums[i] 的元素
+                // 2.从最后面开始移除小于 nums[i] 的元素
                 while (!deque.isEmpty() && nums[deque.peekLast()] < nums[i])
                     deque.removeLast();
 
-                // 下标加入队列
+                // 3.下标加入队列
                 deque.offer(i);
 
-                // 添加最大值到返回的数组中
+                // 4.将最大值加入数组
                 int rindex = i - k + 1;
                 if (rindex >= 0) {
                     res[rindex] = nums[deque.peek()];
