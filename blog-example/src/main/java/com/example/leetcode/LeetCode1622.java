@@ -1,4 +1,4 @@
-package com.example;
+package com.example.leetcode;
 
 /**
  * 1662. 检查两个字符串数组是否相等
