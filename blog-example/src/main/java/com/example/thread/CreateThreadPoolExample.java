@@ -1,5 +1,7 @@
 package com.example.thread;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Date;
 import java.util.concurrent.*;
 
@@ -7,51 +9,6 @@ import java.util.concurrent.*;
  * 线程池 N 种创建方式演示
  */
 public class CreateThreadPoolExample {
-
-//    public static void main(String[] args) {
-//
-//        Runnable runnable = new Runnable() {
-//            @Override
-//            public void run() {
-//                System.out.println("当前任务被执行,执行时间:" + new Date() +
-//                        " 执行线程:" + Thread.currentThread().getName());
-//                try {
-//                    // 等待 1s
-//                    TimeUnit.SECONDS.sleep(1);
-//                } catch (InterruptedException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        };
-
-//        ExecutorService executorService = Executors.newWorkStealingPool();
-//        executorService.submit(runnable);
-//        executorService.submit(runnable);
-//        executorService.submit(runnable);
-
-
-//        ScheduledExecutorService scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
-//        System.out.println("新建任务:" + new Date());
-//        scheduledExecutorService.schedule(runnable, 3, TimeUnit.SECONDS);
-//        scheduledExecutorService.schedule(runnable, 3, TimeUnit.SECONDS);
-
-//        ScheduledExecutorService scheduledExecutor = Executors.newScheduledThreadPool(10);
-//        System.out.println("新建任务:" + new Date());
-//        scheduledExecutor.schedule(runnable, 3, TimeUnit.SECONDS);
-//        scheduledExecutor.schedule(runnable, 3, TimeUnit.SECONDS);
-//        scheduledExecutor.schedule(runnable, 3, TimeUnit.SECONDS);
-
-//        ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(1, 1,
-//                100, TimeUnit.SECONDS, new LinkedBlockingQueue<>(1),
-//                new ThreadPoolExecutor.DiscardPolicy());
-//        threadPoolExecutor.execute(runnable);
-//        threadPoolExecutor.execute(runnable);
-//        threadPoolExecutor.execute(runnable);
-//        threadPoolExecutor.execute(runnable);
-
-//        workStealingPool();
-
-//    }
 
     public static void fixedThreadPool() {
         // 创建 2 个数据级的线程池
@@ -176,7 +133,7 @@ public class CreateThreadPoolExample {
         }
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws ExecutionException, InterruptedException {
         // 任务的具体方法
         Runnable runnable = new Runnable() {
             @Override
@@ -191,21 +148,44 @@ public class CreateThreadPoolExample {
                 }
             }
         };
-        // 创建线程,线程的任务队列的长度为 1
-        ThreadPoolExecutor threadPool = new ThreadPoolExecutor(1, 1,
-                100, TimeUnit.SECONDS, new LinkedBlockingQueue<>(1),
-                new RejectedExecutionHandler() {
-                    @Override
-                    public void rejectedExecution(Runnable r, ThreadPoolExecutor executor) {
-                        // 执行自定义拒绝策略的相关操作
-                        System.out.println("我是自定义拒绝策略~");
-                    }
-                });
-        // 添加并执行 4 个任务
-        threadPool.execute(runnable);
-        threadPool.execute(runnable);
-        threadPool.execute(runnable);
-        threadPool.execute(runnable);
+
+        ThreadFactory threadFactory = new ThreadFactory() {
+            @Override
+            public Thread newThread(@NotNull Runnable r) {
+                Thread t = new Thread(r, "自定义名称" + r.hashCode());
+                return t;
+            }
+        };
+
+        // 创建线程
+        ThreadPoolExecutor threadPool = new ThreadPoolExecutor(2, 2,
+                100, TimeUnit.SECONDS, new LinkedBlockingQueue<>(1), threadFactory,
+                new ThreadPoolExecutor.DiscardOldestPolicy());
+
+        for (int i = 0; i < 4; i++) {
+            final int index = i;
+            threadPool.execute(() -> {
+                System.out.println("执行任务:" + index + " name:" + Thread.currentThread().getName());
+            });
+        }
+
+//        // 添加并执行 4 个任务
+//        threadPool.execute(runnable);
+//        threadPool.execute(runnable);
+//        threadPool.execute(runnable);
+//        threadPool.execute(runnable);
+
+
+//        Future<Integer> submit = threadPool.submit(new Callable<Integer>() {
+//            @Override
+//            public Integer call() throws Exception {
+//                int result = new Random().nextInt(10);
+//                System.out.println("得到随机数~");
+//                return result;
+//            }
+//        });
+//        System.out.println("得到结果:" + submit.get());
+
     }
 
 
