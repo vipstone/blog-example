@@ -7,17 +7,17 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
-import io.netty.handler.codec.DelimiterBasedFrameDecoder;
-import io.netty.handler.codec.Delimiters;
+import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
+import io.netty.handler.codec.LengthFieldPrepender;
 import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.codec.string.StringEncoder;
 
 /**
- * 通过换行符解决粘包
+ * 通过封装 Netty 来解决粘包
  */
-public class NettyExample {
+public class NettyExample2 {
     // 定义服务器的端口号
-    static final int PORT = 9007;
+    static final int PORT = 8007;
 
     /**
      * 服务器端
@@ -36,7 +36,7 @@ public class NettyExample {
                         // 设置 Netty 通道的类型为 NioServerSocket(非阻塞 I/O Socket 服务器)
                         .channel(NioServerSocketChannel.class)
                         // 设置建立连接之后的执行器(ServerInitializer 是我创建的一个自定义类)
-                        .childHandler(new ServerInitializer());
+                        .childHandler(new NettyExample.ServerInitializer());
                 // 绑定端口并且进行同步
                 ChannelFuture future = b.bind(PORT).sync();
                 // 对关闭通道进行监听
@@ -59,7 +59,7 @@ public class NettyExample {
         private static final StringDecoder DECODER = new StringDecoder();
         private static final StringEncoder ENCODER = new StringEncoder();
         // 服务器端连接之后的执行器(自定义的类)
-        private static final ServerHandler SERVER_HANDLER = new ServerHandler();
+        private static final NettyExample.ServerHandler SERVER_HANDLER = new NettyExample.ServerHandler();
 
         /**
          * 初始化通道的具体执行方法
@@ -68,8 +68,10 @@ public class NettyExample {
         public void initChannel(SocketChannel ch) {
             // 通道 Channel 设置
             ChannelPipeline pipeline = ch.pipeline();
-            // 设置结尾分隔符
-            pipeline.addLast(new DelimiterBasedFrameDecoder(1024, Delimiters.lineDelimiter()));
+            // 消息解码:读取消息头和消息体
+            pipeline.addLast(new LengthFieldBasedFrameDecoder(1024, 0, 4, 0, 4));
+            // 消息编码:将消息封装为消息头和消息体,在响应字节数据前面添加消息体长度
+            pipeline.addLast(new LengthFieldPrepender(4));
             // 设置(字符串)编码器和解码器
             pipeline.addLast(DECODER);
             pipeline.addLast(ENCODER);
@@ -126,7 +128,7 @@ public class NettyExample {
                         // 设置通道类型
                         .channel(NioSocketChannel.class)
                         // 设置启动执行器(负责启动事件的业务执行,ClientInitializer 为自定义的类)
-                        .handler(new ClientInitializer());
+                        .handler(new NettyExample.ClientInitializer());
 
                 // 连接服务器端并同步通道
                 Channel ch = b.connect("127.0.0.1", PORT).sync().channel();
@@ -159,7 +161,7 @@ public class NettyExample {
         private static final StringDecoder DECODER = new StringDecoder();
         private static final StringEncoder ENCODER = new StringEncoder();
         // 客户端连接成功之后业务处理
-        private static final ClientHandler CLIENT_HANDLER = new ClientHandler();
+        private static final NettyExample.ClientHandler CLIENT_HANDLER = new NettyExample.ClientHandler();
 
         /**
          * 初始化客户端通道
@@ -167,8 +169,10 @@ public class NettyExample {
         @Override
         public void initChannel(SocketChannel ch) {
             ChannelPipeline pipeline = ch.pipeline();
-            // 设置结尾分隔符
-            pipeline.addLast(new DelimiterBasedFrameDecoder(1024, Delimiters.lineDelimiter()));
+            // 消息解码:读取消息头和消息体
+            pipeline.addLast(new LengthFieldBasedFrameDecoder(1024, 0, 4, 0, 4));
+            // 消息编码:将消息封装为消息头和消息体,在响应字节数据前面添加消息体长度
+            pipeline.addLast(new LengthFieldPrepender(4));
             // 设置(字符串)编码器和解码器
             pipeline.addLast(DECODER);
             pipeline.addLast(ENCODER);
